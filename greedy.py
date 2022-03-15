@@ -1,5 +1,6 @@
-from operator import itemgetter
+#avoid loops using the path
 
+from operator import itemgetter
 from numpy import empty
 
 class node:
@@ -27,20 +28,38 @@ c.addadj([(d, 6), (e, 2)])
 d.addadj([(e, 5), (r, 21)])
 e.addadj([(r, 40)])
 
-def greedy(start, end):
-    path = []
+def greedy(start, end, path=None):
+    if path == None:
+        path = []
     path.append(start.name)
 
-    next = min((x for x in start.adj),key=itemgetter(1), default="EMPTY")
+    """next = min((x for x in start.adj),key=itemgetter(1), default="EMPTY")
     
-    if (next == "EMPTY") or (next[0].name == end.name):
-        path.append(next[0].name)
-
-    greedy(next[0], end)
-
-    #for e in start.adj:
+    if (next == "EMPTY"):
+        #path.append(next[0].name)
+        print('faild')
         
-        #print(e[0].name, end=" ")
-        #print(e[1])
+    elif (next[0].name == end.name):
+        path.append(next[0].name)
+        print('gaol')
+        
 
-greedy(m, r)
+    print(next[0].name)"""
+
+    print(start.name)
+
+    if start == end:
+        return path
+
+    print([x[0].name for x in start.adj])
+    print([x[0].h for x in start.adj])
+
+    next = start.adj[0][0]
+    for temp in start.adj:
+        if temp[0].h < next.h:
+            next = temp[0]
+
+    return greedy(next, end, path)
+
+gredySearch = greedy(m, r)
+print("greedy search path:", gredySearch)
