@@ -1,3 +1,4 @@
+#definition of node class
 class node:
     def __init__(self, name, h):
         self.name = name
@@ -52,6 +53,7 @@ def dfs(start, gaol, visited=None):
     #print(next)
     dfs(next, gaol, visited)
     return visited
+#----------------------
 
 depth_path = dfs(m, r)
 

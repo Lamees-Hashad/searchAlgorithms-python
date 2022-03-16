@@ -1,78 +1,57 @@
-#add a visited list to avoid cycles
-#complete the level
+#definition of node class
+class node:
+    def __init__(self, name, h):
+        self.name = name
+        self.h = h
+        self.adj = []
+    
+    def addadj(self, adj):
+        self.adj = adj
 
-""" graph = {
-  '5' : ['3','7'],
-  '3' : ['2', '4'],
-  '7' : ['8'],
-  '2' : [],
-  '4' : ['8'],
-  '8' : []
-} """
-"""
-graph = {'m': ['a', 'b', 'd', 'e'],
-         'a': ['b', 'r'],
-         'b': ['a', 'c', 'd', 'e'],
-         'c': ['d', 'e'],
-         'd': ['e', 'r'],
-         'e': ['r'],
-         'r': []}
+    #implement comparison operators for node
+    def __lt__(self, other):
+        if self.name < other.name:
+            return True
+        else:
+            return False
 
-visited = [] # List for visited nodes.
-queue = []     #Initialize a queue
+    def __le__(self, other):
+        if self.name <= other.name:
+            return True
+        else:
+            return False
 
-def bfs(visited, graph, node): #function for BFS
-  visited.append(node)
-  queue.append(node)
+    #implement print for node
+    def __str__(self):
+      return self.name
 
-  while queue:          # Creating loop to visit each node
-    m = queue.pop(0) 
-    print (m, end = " ") 
+########## graph ##########
+m = node('m', 25)
+a = node('a', 40)
+b = node('b', 30)
+c = node('c', 30)
+d = node('d', 35)
+e = node('e', 2)
+r = node('r', 0)
 
-    for neighbour in graph[m]:
-      if neighbour not in visited:
-        visited.append(neighbour)
-        queue.append(neighbour)
+m.addadj([(5, a), (8, b), (4, d), (1, e)])
+a.addadj([(2, b), (30, r)])
+b.addadj([(1, a), (12, c), (3, d), (3, e)])
+c.addadj([(6, d), (2, e)])
+d.addadj([(5, e), (21, r)])
+e.addadj([(40, r)])
+#--------------------------------------------
 
-# Driver Code
-print("Following is the Breadth-First Search")
-bfs(visited, graph, '5')    # function calling """
 
-# graph is in adjacent list representation
-"""graph = {
-        '1': ['2', '3', '4'],
-        '2': ['5', '6'],
-        '3': [],
-        '5': ['9', '10'],
-        '4': ['7', '8'],
-        '6': [],
-        '7': ['11', '12'],
-        '8': [],
-        '9': [],
-        '10': [],
-        '11': [],
-        '12': []
-        }"""
-
-graph = {'m': ['a', 'b', 'd', 'e'],
-         'a': ['b', 'r'],
-         'b': ['a', 'c', 'd', 'e'],
-         'c': ['d', 'e'],
-         'd': ['e', 'r'],
-         'e': ['r'],
-         'r': []}
-
-def bfs(graph, start, end):
+def bfs(start, end):
     # maintain a queue of paths
     queue = []
+    visited = []  #to avoid loops, expanded nodes are stored in a list
 
-    final_path = []
-    l=0
-    nextl = 0
     # push the first path into the queue
     queue.append([start])
-    #print(start)
-    #print("\n")
+    print("start node:", start)
+    
     while queue:
         # get the first path from the queue
         path = queue.pop(0)
@@ -82,35 +61,26 @@ def bfs(graph, start, end):
         if node == end:
             return path
 
-
-
-
-
-
-        #print(graph.get(node, []), end = " ")
-        #nextl+=len(graph.get(node, []))
-        #if not l:
-            #l = nextl - 1
-            #nextl=0
-            #print("\n")
-        #else:
-            #l -= 1
-
+        if node in visited:   #check if adj node expanded before
+          continue
+        visited.append(node)
         
-        # enumerate all adjacent nodes, construct a 
+        print("current path: ", [x.name for x in path])
+        print("current node: ", node)
+        print("edges: ", [x[1].name for x in node.adj])
+
+        # for all adjacent nodes, construct a 
         # new path and push it into the queue
-        for adjacent in graph.get(node, []):
-            print(adjacent)
+        for adjacent in node.adj:
+            print("current neighbour: ", adjacent[1])
             new_path = list(path)
-            new_path.append(adjacent)
-            print(new_path)
+            new_path.append(adjacent[1])
+            print("path to neighbour: ", [x.name for x in new_path])
             queue.append(new_path)
-            print(queue)
-            if adjacent == end:
-                final_path = new_path
-        
-        """if final_path:
+            #print queue
+            print("queue of paths: ")
+            for i in queue:
+              print([x.name for x in i], end=' ')
             print("\n")
-            return final_path"""
-
-print (bfs(graph, 'm', 'r'))
+        
+print ("breadth search path: ", [x.name for x in bfs(m, r)])
