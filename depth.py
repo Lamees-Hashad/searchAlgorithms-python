@@ -39,22 +39,22 @@ e.addadj([(40, r)])
 #--------------------------------------------
 
 # DFS algorithm
-def dfs(start, gaol, visited=None):
-    if visited is None:
-        visited = []
-    visited.append(start)
+def dfs(start, gaol, path=None):
+    if path is None:
+        path = []
+    path.append(start)
 
-    print(start.name)
-    print(sorted(set([x[1].name for x in start.adj]) - set(x.name for x in visited)))
+    print("current node: ", start.name)
+    print("       edges: ", sorted(set([x[1].name for x in start.adj]) - set(x.name for x in path)))
     if start == gaol:
-        return visited
+        return path
 
-    next = sorted(sorted(set([x[1] for x in start.adj]) - set(visited)))[0]
+    next = sorted(sorted(set([x[1] for x in start.adj]) - set(path)))[0]
     #print(next)
-    dfs(next, gaol, visited)
-    return visited
+    dfs(next, gaol, path)
+    return path
 #----------------------
 
 depth_path = dfs(m, r)
 
-print([x.name for x in depth_path])
+print("depth search path: ", [x.name for x in depth_path])

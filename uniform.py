@@ -1,6 +1,9 @@
+#add <,<= implementation,
+# so if f value is same for 2 paths in the priorty queue take node smallest alphabetically
+
 import queue
 
-
+#definition of node class
 class node:
     def __init__(self, name, h):
         self.name = name
@@ -10,6 +13,24 @@ class node:
     def addadj(self, adj):
         self.adj = adj
 
+    #implement comparison operators for node
+    def __lt__(self, other):
+        if self.name < other.name:
+            return True
+        else:
+            return False
+
+    def __le__(self, other):
+        if self.name <= other.name:
+            return True
+        else:
+            return False
+
+    #implement print for node
+    def __str__(self):
+      return self.name
+
+########## graph ##########
 m = node('m', 25)
 a = node('a', 40)
 b = node('b', 30)
@@ -24,6 +45,7 @@ b.addadj([(1, a), (12, c), (3, d), (3, e)])
 c.addadj([(6, d), (2, e)])
 d.addadj([(5, e), (21, r)])
 e.addadj([(40, r)])
+#--------------------------------------------
 
 def uniform(start, goal):
     visited = set()                  # set of visited nodes
@@ -37,19 +59,19 @@ def uniform(start, goal):
 
     while not q.empty():             # while the queue is nonempty
         g, current_node, path = q.get()
-        visited.add(current_node)    # mark node visited on expansion,
-                                     # only now we know we are on the cheapest path to
-                                     # the current node.
+        visited.add(current_node)    # mark node visited on expansion
 
         print("\n current node:\n",current_node.name, " path: ", [x.name for x in path])
 
-        if current_node == goal:     # if the current node is a goal
-            return path              # return its path
+        if current_node == goal:     # if the current node is a goal return it the path
+            return path              
         else:
+            print("edges: ")
             for edge in current_node.adj:
-                print("edges", edge[1].name, ",g:", edge[0]+g, end="    ")
+                print(edge[1].name, ",g:", edge[0]+g, end="    ")
                 child = edge[1]
-                if child not in visited:  #child was not expanded before
+                if child not in visited:  #if child was not expanded before add path to it to the queue
                     q.put((g + edge[0], child, path + [child]))
+#----------------------
 
 print("uniform search path: ",[x.name for x in uniform(m, r)])

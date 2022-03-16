@@ -43,7 +43,7 @@ e.addadj([(40, r)])
 #--------------------------------------------
 
 
-def bfs(start, end):
+def bfs(start, goal):
     # maintain a queue of paths
     queue = []
     visited = []  #to avoid loops, expanded nodes are stored in a list
@@ -58,7 +58,7 @@ def bfs(start, end):
         # get the last node from the path
         node = path[-1]
         # path found
-        if node == end:
+        if node == goal:
             return path
 
         if node in visited:   #check if adj node expanded before
@@ -72,15 +72,16 @@ def bfs(start, end):
         # for all adjacent nodes, construct a 
         # new path and push it into the queue
         for adjacent in node.adj:
-            print("current neighbour: ", adjacent[1])
+            print("current child: ", adjacent[1])
             new_path = list(path)
             new_path.append(adjacent[1])
-            print("path to neighbour: ", [x.name for x in new_path])
+            print("path to child: ", [x.name for x in new_path])
             queue.append(new_path)
             #print queue
             print("queue of paths: ")
             for i in queue:
               print([x.name for x in i], end=' ')
             print("\n")
+#----------------------
         
 print ("breadth search path: ", [x.name for x in bfs(m, r)])
